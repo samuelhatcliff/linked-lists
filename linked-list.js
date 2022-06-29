@@ -40,7 +40,7 @@ class LinkedList {
       this.head = node;
       this.tail = node;
     }
-    currentHead = this.head;
+    let currentHead = this.head;
     this.head = node;
     this.head.next = currentHead;
     this.length++;
@@ -50,18 +50,35 @@ class LinkedList {
   /** pop(): return & remove last item. */
 
   pop() {
-    if (!this.tail) return undefined
-    //change undefined to throw error
-
-
-
+    if (!this.tail) {
+      throw `Linked List is empty.`
+    }
+    if (this.length === 1) {
+      poppedNode = this.head;
+      this.head = null;
+      this.tail = null;
+      return poppedNode;
+    }
+    let index = 0;
+    let node = this.head
+    while (index !== this.length - 2) {
+      node = node.next
+      index++;
+    }
+    const prevLastNode = node.next;
+    const newLastNode = node;
+    newLastNode.next = null
+    this.tail = newLastNode;
+    this.length--;
+    return prevLastNode
   }
 
   /** shift(): return & remove first item. */
 
   shift() {
-    if (!this.head) return undefined;
-    //change undefined to throw error
+    if (!this.head) {
+      throw `Linked List is empty.`
+    }
     let currentHead = this.head;
     this.head = currentHead.next;
     this.length--;
@@ -72,8 +89,7 @@ class LinkedList {
 
   getAt(idx) {
     if (idx >= this.length) {
-      return undefined;
-      //change undefined to throw error
+      throw `Index of ${idx} does not exist in this linked list.`
     }
     let count = 0;
     function traverse(node) {
@@ -90,13 +106,12 @@ class LinkedList {
 
   setAt(idx, val) {
     if (idx >= this.length) {
-      return undefined;
-      //change undefined to throw error
+      throw `Index of ${idx} does not exist in this linked list.`
     }
     let count = 0;
     function traverse(node) {
       if (count === idx) {
-        node.val = val
+        node.val = val;
         return this;
       }
       count++;
@@ -109,14 +124,13 @@ class LinkedList {
 
   insertAt(idx, val) {
     if (idx >= this.length) {
-      return undefined;
-      //change undefined to throw error
+      throw `Index of ${idx} does not exist in this linked list.`
     }
     let count = 0;
     function traverse(node) {
       if (count === idx - 1) {
         const value = new Node(val);
-        nodeToSwap = node.next;
+        let nodeToSwap = node.next;
         node.next = value;
         value.next = nodeToSwap;
         return this;
@@ -132,13 +146,12 @@ class LinkedList {
 
   removeAt(idx) {
     if (idx >= this.length) {
-      return undefined;
-      //change undefined to throw error
+      throw `Index of ${idx} does not exist in this linked list.`
     }
     let count = 0;
     function traverse(node) {
       if (count === idx - 1) {
-        nodeToSwap = node.next.next;
+        let nodeToSwap = node.next.next;
         node.next = nodeToSwap;
         return this;
       }
@@ -151,8 +164,13 @@ class LinkedList {
   /** average(): return an average of all values in the list */
 
   average() {
+    if (!this.head) return 0
     let sum = 0;
+    let index = 0;
+    let length = this.length;
     function traverse(node) {
+      if (index === length) return;
+      index++;
       sum += node.val;
       return traverse(node.next);
     }
@@ -161,4 +179,11 @@ class LinkedList {
   }
 }
 
+const list = new LinkedList();
+list.push(1);
+list.push(2);
+list.push(3);
+list.push(99)
+console.log(list.pop())
+console.log(list)
 module.exports = LinkedList;
